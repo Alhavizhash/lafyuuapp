@@ -1,12 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lafyuuapp/models/model.dart';
 import 'package:lafyuuapp/widgets/categoryCard.dart';
 import 'package:lafyuuapp/widgets/flashsaleCard.dart';
 import 'package:lafyuuapp/widgets/recomendedCard.dart';
 import 'package:lafyuuapp/widgets/search.dart';
 
-class homePage extends StatelessWidget {
+import '../repository/repository.dart';
+
+class homePage extends StatefulWidget {
   const homePage({super.key});
+
+  @override
+  State<homePage> createState() => _homePageState();
+}
+
+class _homePageState extends State<homePage> {
+  List<Product> listProduct = [];
+  Repository repository = Repository();
+
+  getData() async {
+    listProduct = await repository.getData();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,42 +139,29 @@ class homePage extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    flashsaleCard(
+            SizedBox(height: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                height: 270,
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (contex, index) {
+                      return recomendedCard(
                         discount: "24% off",
-                        image: "images/product1.png",
-                        name: "FS - Nike Air Max 270 React...",
+                        image: listProduct[index].ProductImage,
+                        name: listProduct[index].nameProduct,
                         ontap: () {},
-                        pricenow: "Rp.499.000-,",
-                        priceold: "799.999-,"),
-                    SizedBox(width: 16),
-                    flashsaleCard(
-                        discount: "24% off",
-                        image: "images/product2.png",
-                        name: "FS - QUILTED MAXI CROS...",
-                        ontap: () {},
-                        pricenow: "Rp.499.000-,",
-                        priceold: "799.999-,"),
-                    SizedBox(width: 16),
-                    flashsaleCard(
-                        discount: "24% off",
-                        image: "images/product3.png",
-                        name: "FS - Nike Air Max 270 React...",
-                        ontap: () {},
-                        pricenow: "Rp.499.000-,",
-                        priceold: "799.999-,"),
-                    SizedBox(width: 16),
-                  ],
-                ),
+                        pricenow: listProduct[index].priceNow,
+                        priceold: listProduct[index].priceOld,
+                      );
+                    },
+                    itemCount: listProduct.length),
               ),
             ),
-            SizedBox(height: 23),
+            SizedBox(height: 17),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -174,45 +183,32 @@ class homePage extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    flashsaleCard(
+            SizedBox(height: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                height: 270,
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (contex, index) {
+                      return recomendedCard(
                         discount: "24% off",
-                        image: "images/product4.png",
-                        name: "FS - Nike Air Max 270 React...",
+                        image: listProduct[index].ProductImage,
+                        name: listProduct[index].nameProduct,
                         ontap: () {},
-                        pricenow: "Rp.499.000-,",
-                        priceold: "799.999-,"),
-                    SizedBox(width: 16),
-                    flashsaleCard(
-                        discount: "24% off",
-                        image: "images/product5.png",
-                        name: "FS - QUILTED MAXI CROS...",
-                        ontap: () {},
-                        pricenow: "Rp.499.000-,",
-                        priceold: "799.999-,"),
-                    SizedBox(width: 16),
-                    flashsaleCard(
-                        discount: "24% off",
-                        image: "images/product6.png",
-                        name: "FS - Nike Air Max 270 React...",
-                        ontap: () {},
-                        pricenow: "Rp.499.000-,",
-                        priceold: "799.999-,"),
-                    SizedBox(width: 16),
-                  ],
-                ),
+                        pricenow: listProduct[index].priceNow,
+                        priceold: listProduct[index].priceOld,
+                      );
+                    },
+                    itemCount: listProduct.length),
               ),
             ),
             SizedBox(height: 17),
             Image.asset("images/banner2.png"),
             SizedBox(height: 23),
-            GridView(
+            GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -221,40 +217,17 @@ class homePage extends StatelessWidget {
                 mainAxisSpacing: 15,
                 mainAxisExtent: 280,
               ),
-              children: [
-                recomendedCard(
+              itemBuilder: (contex, index) {
+                return recomendedCard1(
                   discount: "24% off",
-                  image: "images/product5.png",
-                  name: "Nike Air Max 270 React ENG",
+                  image: listProduct[index].ProductImage,
+                  name: listProduct[index].nameProduct,
                   ontap: () {},
-                  pricenow: "Rp.899.999-,",
-                  priceold: "Rp.1.000.000-,",
-                ),
-                recomendedCard(
-                  discount: "24% off",
-                  image: "images/product4.png",
-                  name: "Nike Air Max 270 React ENG",
-                  ontap: () {},
-                  pricenow: "Rp.899.999-,",
-                  priceold: "Rp.1.000.000-,",
-                ),
-                recomendedCard(
-                  discount: "24% off",
-                  image: "images/product7.png",
-                  name: "Nike Air Max 270 React ENG",
-                  ontap: () {},
-                  pricenow: "Rp.899.999-,",
-                  priceold: "Rp.1.000.000-,",
-                ),
-                recomendedCard(
-                  discount: "24% off",
-                  image: "images/product3.png",
-                  name: "Nike Air Max 270 React ENG",
-                  ontap: () {},
-                  pricenow: "Rp.899.999-,",
-                  priceold: "Rp.1.000.000-,",
-                ),
-              ],
+                  pricenow: listProduct[index].priceNow,
+                  priceold: listProduct[index].priceOld,
+                );
+              },
+              itemCount: listProduct.length,
             ),
           ],
         ),
